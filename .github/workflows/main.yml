@@ -1,0 +1,22 @@
+name: Transfer to Mega
+on:
+  workflow_dispatch:
+    inputs:
+      file_url:
+        description: 'ضع رابط الملف هنا'
+        required: true
+        default: ''
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: pip install requests mega.py
+      - name: Run Script
+        run: python upload_to_mega.py "${{ github.event.inputs.file_url }}"
