@@ -5,7 +5,6 @@ on:
       file_url:
         description: 'ضع رابط الملف هنا'
         required: true
-        default: ''
 
 jobs:
   build:
