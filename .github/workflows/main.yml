@@ -10,15 +10,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.9' # هذا هو الإصدار المستقر الذي سيحل المشكلة
+
       - name: Install dependencies
-        run: pip install requests mega.py
+        run: |
+          pip install requests
+          pip install mega.py
+
       - name: Run Script
-        run: python upload_to_mega.py "${{ github.event.inputs.file_url }}"
         env:
           MEGA_EMAIL: ${{ secrets.MEGA_EMAIL }}
           MEGA_PASSWORD: ${{ secrets.MEGA_PASSWORD }}
+        run: python upload_to_mega.py "${{ github.event.inputs.file_url }}"
