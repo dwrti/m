@@ -1,0 +1,29 @@
+name: Video Uploader to Pomf2
+
+on:
+  workflow_dispatch: # تشغيل يدوي
+
+jobs:
+  upload_video:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Video
+        run: |
+          # تحميل الفيديو وحفظه باسم video.mp4
+          # استخدمت الكوتشينات " " لأن الرابط يحتوي على رموز خاصة
+          curl -L "https://abra--5e4bd524.api.cosmic-crab.buzz/f156c9e34b9b191a93ec53d5e1587ce27f3151ee/%D8%A3%D8%A8%D8%B7%D8%A7%D9%84%20%D8%A7%D9%84%D8%AF%D9%8A%D8%AC%D9%8A%D8%AA%D8%A7%D9%84%20%D8%B3%D8%A8%D9%8A%D8%B3%D8%AA%D9%88%D9%86%20265/04.mp4?api-key=8acbcf1e-732c-4574-a3bf-27e6a85b86f1&download=true&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAzNjk0NjYsInJhdGUiOiI1TSIsInJvbGUiOiJmcmVlIiwic2Vzc2lvbklEIjoiTVRjMk9UQTROREF6T1h4T2QzZEJUa1pLVTFaR1pGUlRWbWhGVGpCNFZsVnJZM2xTUlhSTFZWWm9VbE5zWkZwWFJFMTVVekZSZWxWRlpGaFVSbHBYVkd4d1JsUkZiRkJTYTJoR1ZGWmFWbFpWYUVkV01FVTlmT1I0QXRnWXJGOUV3NU93bHl4Uy13Nk8xY0lPZjlfR2VnbjI3SFI5by1YRyIsImRvbWFpbiI6IndlYnRvci5pbyIsImFnZW50IjoiTW96aWxsYS81LjAgKE1hY2ludG9zaDsgSW50ZWwgTWFjIE9TIFggMTBfMTVfNykgQXBwbGVXZWJLaXQvNjA1LjEuMTUgKEtIVE1MLCBsaWtlIEdlY2tvKSBWZXJzaW9uLzE2LjYuMSBTYWZhcmkvNjA1LjEuMTUiLCJyZW1vdGVBZGRyZXNzIjoiMjAwMToxNmE0OjIwMzo3ZDE1OjI5ZGI6ZThkMToyNGFjOjVmNTcifQ.vUfkDyn-pWlaCDWpaTNF5z0OOANrClOWcGHWhby9esA" -o video.mp4
+
+      - name: Upload to Pomf2
+        run: |
+          echo "جاري الرفع إلى Pomf2..."
+          # الرفع باستخدام API الخاص بالموقع
+          RESPONSE=$(curl -F "files[]=@video.mp4" https://pomf2.lain.la/upload.php)
+          
+          # استخراج الرابط من استجابة JSON
+          FILE_URL=$(echo $RESPONSE | jq -r '.files[0].url')
+          
+          echo "------------------------------------------"
+          echo "تم الرفع بنجاح!"
+          echo "الرابط المباشر الجديد هو: $FILE_URL"
+          echo "------------------------------------------"
